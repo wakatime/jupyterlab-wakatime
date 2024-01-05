@@ -1,0 +1,14 @@
+# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
+_commit: v4.2.4
+_src_path: https://github.com/jupyterlab/extension-template
+author_email: allan-chain@outllok.com
+author_name: Allan Chain
+has_binder: false
+has_settings: false
+kind: server
+labextension_name: waka-jlab
+project_short_description: A JupyterLab WakaTime extension.
+python_name: waka_jlab
+repository: https://github.com/AllanChain/waka-jlab
+test: true
+
