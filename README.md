@@ -11,22 +11,24 @@ A JupyterLab WakaTime extension.
 
 > [!Warning]
 >
-> This plugin is at a VERY early stage! You should setup WakaTime manually.
+> This plugin is at a VERY early stage!
 
-If `~/.wakatime/wakatime-cli` doesn’t exist, download the `wakatime-cli` zip file for the current OS and architecture from the [latest release](https://github.com/wakatime/wakatime-cli/releases) then unzip it into `~/.wakatime/`.
+1.  Install [wakatime-cli](https://github.com/wakatime/wakatime-cli):
 
-And in `~/.wakatime.cfg`, write:
+        curl -fsSL https://raw.githubusercontent.com/wakatime/vim-wakatime/master/scripts/install_cli.py | python
 
-```ini
-[settings]
-api_key=waka_YOUR_API_KEY_HERE
-```
+    If the above command doesn't work, download [install_cli.py](https://raw.githubusercontent.com/wakatime/vim-wakatime/master/scripts/install_cli.py) and run it manually with Python 3.
 
-To install the extension, execute (NOT available yet):
+2.  Create a `~/.wakatime.cfg` file with contents:
 
-```bash
-pip install waka_jlab
-```
+        [settings]
+        api_key = XXXX
+
+    Replace `XXXX` with your actual [api key](https://wakatime.com/settings#apikey).
+
+3.  Execute (NOT available yet):
+
+        pip install waka_jlab
 
 ## Uninstall
 
