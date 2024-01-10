@@ -11,10 +11,6 @@ waka_jlab/labextension
 # Version file is handled by hatchling
 waka_jlab/_version.py
 
-# Integration tests
-ui-tests/test-results/
-ui-tests/playwright-report/
-
 # Created by https://www.gitignore.io/api/python
 # Edit at https://www.gitignore.io/?templates=python
 
