@@ -3,15 +3,25 @@
 [![Github Actions Status](https://github.com/AllanChain/waka-jlab/workflows/Build/badge.svg)](https://github.com/AllanChain/waka-jlab/actions/workflows/build.yml)
 A JupyterLab WakaTime extension.
 
-This extension is composed of a Python package named `waka_jlab`
-for the server extension and a NPM package named `waka-jlab`
-for the frontend extension.
-
 ## Requirements
 
 - JupyterLab >= 4.0.0
 
 ## Install
+
+
+> [!Warning]
+>
+> This plugin is at a VERY early stage! You should setup WakaTime manually.
+
+If `~/.wakatime/wakatime-cli` doesn’t exist, download the `wakatime-cli` zip file for the current OS and architecture from the [latest release](https://github.com/wakatime/wakatime-cli/releases) then unzip it into `~/.wakatime/`.
+
+And in `~/.wakatime.cfg`, write:
+
+```ini
+[settings]
+api_key=waka_YOUR_API_KEY_HERE
+```
 
 To install the extension, execute:
 
@@ -26,6 +36,10 @@ To remove the extension, execute:
 ```bash
 pip uninstall waka_jlab
 ```
+
+The following content is generated with the template:
+
+---
 
 ## Troubleshoot
 
