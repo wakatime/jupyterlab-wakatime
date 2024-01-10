@@ -9,7 +9,6 @@ A JupyterLab WakaTime extension.
 
 ## Install
 
-
 > [!Warning]
 >
 > This plugin is at a VERY early stage! You should setup WakaTime manually.

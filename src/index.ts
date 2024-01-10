@@ -25,7 +25,9 @@ const plugin: JupyterFrontEndPlugin<void> = {
       })
     })
     notebooks.currentChanged.connect((_, notebook) => {
-      if (notebook === null) return
+      if (notebook === null) {
+        return
+      }
       beatHeart(notebook.sessionContext.path, 'switch')
     })
   }

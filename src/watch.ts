@@ -16,7 +16,9 @@ export const beatHeart = (
 ) => {
   console.log(type, filepath)
   const now = Date.now()
-  if (type === 'change' && now - lastBeat < wakaInterval) return
+  if (type === 'change' && now - lastBeat < wakaInterval) {
+    return
+  }
   const data: BeatData = {
     filepath: filepath,
     timestamp: now / 1e3,
