@@ -123,3 +123,5 @@ dmypy.json
 
 # Yarn cache
 .yarn/
+
+playground/
