@@ -22,7 +22,7 @@ And in `~/.wakatime.cfg`, write:
 api_key=waka_YOUR_API_KEY_HERE
 ```
 
-To install the extension, execute:
+To install the extension, execute (NOT available yet):
 
 ```bash
 pip install waka_jlab
