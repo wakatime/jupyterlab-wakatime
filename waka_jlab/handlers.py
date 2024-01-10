@@ -9,11 +9,12 @@ import tornado
 
 from ._version import __version__ as extension_version
 
-HOME_FOLDER = os.path.realpath(os.environ.get(
-    'WAKATIME_HOME') or os.path.expanduser('~'))
-RESOURCES_FOLDER = os.path.join(HOME_FOLDER, '.wakatime')
+HOME_FOLDER = os.path.realpath(
+    os.environ.get("WAKATIME_HOME") or os.path.expanduser("~")
+)
+RESOURCES_FOLDER = os.path.join(HOME_FOLDER, ".wakatime")
 WAKATIME_CLI = os.path.join(RESOURCES_FOLDER, "wakatime-cli")
-USER_AGENT = f'jupyterlab/{jlab_version} jupyterlab-wakatime/{extension_version}'
+USER_AGENT = f"jupyterlab/{jlab_version} jupyterlab-wakatime/{extension_version}"
 
 
 class RequestData(TypedDict):
@@ -36,15 +37,15 @@ class RouteHandler(APIHandler):
             filepath = os.path.abspath(data["filepath"])
             cmd_args.extend(["--entity", filepath])
             if data["timestamp"]:
-                cmd_args.extend(["--time", str(data['timestamp'])])
+                cmd_args.extend(["--time", str(data["timestamp"])])
             if data["iswrite"]:
                 cmd_args.append("--write")
         except:
             self.set_status(400)
         print(cmd_args)
         p = subprocess.run(cmd_args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        print(p.stdout.decode('utf8'))
-        print(p.stderr.decode('utf8'))
+        print(p.stdout.decode("utf8"))
+        print(p.stderr.decode("utf8"))
         if p.returncode != 0:
             self.set_status(500)
         self.finish()
