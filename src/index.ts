@@ -4,15 +4,15 @@ import { INotebookTracker } from '@jupyterlab/notebook'
 import { beatHeart } from './watch'
 
 /**
- * Initialization data for the waka-jlab extension.
+ * Initialization data for the jupyterlab-wakatime extension.
  */
 const plugin: JupyterFrontEndPlugin<void> = {
-  id: 'waka-jlab:plugin',
+  id: 'jupyterlab-wakatime:plugin',
   description: 'A JupyterLab WakaTime extension.',
   autoStart: true,
   requires: [INotebookTracker],
   activate: (app: JupyterFrontEnd, notebooks: INotebookTracker) => {
-    console.log('JupyterLab extension waka-jlab is activated!')
+    console.log('JupyterLab extension jupyterlab-wakatime is activated!')
     notebooks.widgetAdded.connect((_, notebook) => {
       const filepath = notebook.sessionContext.path
       notebook.content.model?.contentChanged.connect(() => {

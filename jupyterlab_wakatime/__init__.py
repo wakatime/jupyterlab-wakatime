@@ -6,17 +6,17 @@ except ImportError:
     # the package from a stable release or in editable mode: https://pip.pypa.io/en/stable/topics/local-project-installs/#editable-installs
     import warnings
 
-    warnings.warn("Importing 'waka_jlab' outside a proper installation.")
+    warnings.warn("Importing 'jupyterlab_wakatime' outside a proper installation.")
     __version__ = "dev"
 from .handlers import setup_handlers
 
 
 def _jupyter_labextension_paths():
-    return [{"src": "labextension", "dest": "waka-jlab"}]
+    return [{"src": "labextension", "dest": "jupyterlab-wakatime"}]
 
 
 def _jupyter_server_extension_points():
-    return [{"module": "waka_jlab"}]
+    return [{"module": "jupyterlab_wakatime"}]
 
 
 def _load_jupyter_server_extension(server_app):
@@ -28,5 +28,5 @@ def _load_jupyter_server_extension(server_app):
         JupyterLab application instance
     """
     setup_handlers(server_app.web_app)
-    name = "waka_jlab"
+    name = "jupyterlab_wakatime"
     server_app.log.info(f"Registered {name} server extension")

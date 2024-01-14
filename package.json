@@ -1,5 +1,5 @@
 {
-    "name": "waka-jlab",
+    "name": "jupyterlab-wakatime",
     "version": "0.1.2",
     "description": "A JupyterLab WakaTime extension.",
     "keywords": [
@@ -7,9 +7,9 @@
         "jupyterlab",
         "jupyterlab-extension"
     ],
-    "homepage": "https://github.com/AllanChain/waka-jlab",
+    "homepage": "https://github.com/AllanChain/jupyterlab-wakatime",
     "bugs": {
-        "url": "https://github.com/AllanChain/waka-jlab/issues"
+        "url": "https://github.com/AllanChain/jupyterlab-wakatime/issues"
     },
     "license": "BSD-3-Clause",
     "author": {
@@ -25,7 +25,7 @@
     "style": "style/index.css",
     "repository": {
         "type": "git",
-        "url": "https://github.com/AllanChain/waka-jlab.git"
+        "url": "https://github.com/AllanChain/jupyterlab-wakatime.git"
     },
     "scripts": {
         "build": "jlpm build:lib && jlpm build:labextension:dev",
@@ -37,7 +37,7 @@
         "clean": "jlpm clean:lib",
         "clean:lib": "rimraf lib tsconfig.tsbuildinfo",
         "clean:lintcache": "rimraf .eslintcache .stylelintcache",
-        "clean:labextension": "rimraf waka_jlab/labextension waka_jlab/_version.py",
+        "clean:labextension": "rimraf jupyterlab_wakatime/labextension jupyterlab_wakatime/_version.py",
         "clean:all": "jlpm clean:lib && jlpm clean:labextension && jlpm clean:lintcache",
         "eslint": "jlpm eslint:check --fix",
         "eslint:check": "eslint . --cache --ext .ts,.tsx",
@@ -99,12 +99,12 @@
                     "pip"
                 ],
                 "base": {
-                    "name": "waka_jlab"
+                    "name": "jupyterlab_wakatime"
                 }
             }
         },
         "extension": true,
-        "outputDir": "waka_jlab/labextension"
+        "outputDir": "jupyterlab_wakatime/labextension"
     },
     "eslintIgnore": [
         "node_modules",

@@ -1,6 +1,6 @@
-# waka_jlab
+# jupyterlab_wakatime
 
-[![Github Actions Status](https://github.com/AllanChain/waka-jlab/workflows/Build/badge.svg)](https://github.com/AllanChain/waka-jlab/actions/workflows/build.yml)
+[![Github Actions Status](https://github.com/AllanChain/jupyterlab-wakatime/workflows/Build/badge.svg)](https://github.com/AllanChain/jupyterlab-wakatime/actions/workflows/build.yml)
 A JupyterLab WakaTime extension.
 
 ## Requirements
@@ -28,14 +28,14 @@ A JupyterLab WakaTime extension.
 
 3.  Execute (NOT available yet):
 
-        pip install waka_jlab
+        pip install jupyterlab_wakatime
 
 ## Uninstall
 
 To remove the extension, execute:
 
 ```bash
-pip uninstall waka_jlab
+pip uninstall jupyterlab_wakatime
 ```
 
 The following content is generated with the template:
@@ -70,13 +70,13 @@ The `jlpm` command is JupyterLab's pinned version of
 
 ```bash
 # Clone the repo to your local environment
-# Change directory to the waka_jlab directory
+# Change directory to the jupyterlab_wakatime directory
 # Install package in development mode
 pip install -e "."
 # Link your development version of the extension with JupyterLab
 jupyter labextension develop . --overwrite
 # Server extension must be manually installed in develop mode
-jupyter server extension enable waka_jlab
+jupyter server extension enable jupyterlab_wakatime
 # Rebuild extension Typescript source after making changes
 jlpm build
 ```
@@ -102,13 +102,13 @@ jupyter lab build --minimize=False
 
 ```bash
 # Server extension must be manually disabled in develop mode
-jupyter server extension disable waka_jlab
-pip uninstall waka_jlab
+jupyter server extension disable jupyterlab_wakatime
+pip uninstall jupyterlab_wakatime
 ```
 
 In development mode, you will also need to remove the symlink created by `jupyter labextension develop`
 command. To find its location, you can run `jupyter labextension list` to figure out where the `labextensions`
-folder is located. Then you can remove the symlink named `waka-jlab` within that folder.
+folder is located. Then you can remove the symlink named `jupyterlab-wakatime` within that folder.
 
 ### Packaging the extension
 

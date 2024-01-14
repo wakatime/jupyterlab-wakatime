@@ -6,9 +6,9 @@ author_name: Allan Chain
 has_binder: false
 has_settings: false
 kind: server
-labextension_name: waka-jlab
+labextension_name: jupyterlab-wakatime
 project_short_description: A JupyterLab WakaTime extension.
-python_name: waka_jlab
-repository: https://github.com/AllanChain/waka-jlab
+python_name: jupyterlab_wakatime
+repository: https://github.com/AllanChain/jupyterlab-wakatime
 test: false
 

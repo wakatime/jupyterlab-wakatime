@@ -32,10 +32,10 @@ jobs:
         python -m pip install .[test]
 
         jupyter server extension list
-        jupyter server extension list 2>&1 | grep -ie "waka_jlab.*OK"
+        jupyter server extension list 2>&1 | grep -ie "jupyterlab_wakatime.*OK"
 
         jupyter labextension list
-        jupyter labextension list 2>&1 | grep -ie "waka-jlab.*OK"
+        jupyter labextension list 2>&1 | grep -ie "jupyterlab-wakatime.*OK"
         python -m jupyterlab.browser_check
 
     - name: Package the extension
@@ -44,13 +44,13 @@ jobs:
 
         pip install build
         python -m build
-        pip uninstall -y "waka_jlab" jupyterlab
+        pip uninstall -y "jupyterlab_wakatime" jupyterlab
 
     - name: Upload extension packages
       uses: actions/upload-artifact@v3
       with:
         name: extension-artifacts
-        path: dist/waka_jlab*
+        path: dist/jupyterlab_wakatime*
         if-no-files-found: error
 
   test_isolated:
@@ -73,14 +73,14 @@ jobs:
         sudo rm -rf $(which node)
         sudo rm -rf $(which node)
 
-        pip install "jupyterlab>=4.0.0,<5" waka_jlab*.whl
+        pip install "jupyterlab>=4.0.0,<5" jupyterlab_wakatime*.whl
 
 
         jupyter server extension list
-        jupyter server extension list 2>&1 | grep -ie "waka_jlab.*OK"
+        jupyter server extension list 2>&1 | grep -ie "jupyterlab_wakatime.*OK"
 
         jupyter labextension list
-        jupyter labextension list 2>&1 | grep -ie "waka-jlab.*OK"
+        jupyter labextension list 2>&1 | grep -ie "jupyterlab-wakatime.*OK"
         python -m jupyterlab.browser_check --no-browser-test
 
 
