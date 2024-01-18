@@ -1,5 +1,6 @@
 import asyncio
 import os.path
+import shlex
 from typing import TypedDict
 
 from jupyter_server.base.handlers import APIHandler
@@ -34,7 +35,8 @@ class RouteHandler(APIHandler):
             cmd_args: list[str] = ["--plugin", USER_AGENT]
             cmd_args.append("--log-to-stdout")
 
-            filepath = os.path.abspath(data["filepath"])
+            root_dir = os.path.expanduser(self.contents_manager.root_dir)
+            filepath = os.path.abspath(os.path.join(root_dir, data["filepath"]))
             cmd_args.extend(["--entity", filepath])
             if data["timestamp"]:
                 cmd_args.extend(["--time", str(data["timestamp"])])
@@ -42,16 +44,17 @@ class RouteHandler(APIHandler):
                 cmd_args.append("--write")
         except:
             self.set_status(400)
+            return self.finish()
+        self.log.info("wakatime-cli " + shlex.join(cmd_args))
         proc = await asyncio.create_subprocess_exec(
             WAKATIME_CLI,
             *cmd_args,
             stdout=asyncio.subprocess.PIPE,
         )
         stdout, _ = await proc.communicate()
-        self.log.info("wakatime-cli " + " ".join(cmd_args))
         if proc.returncode != 0:
             self.set_status(500)
-            self.log.error("wakatime error:", stdout.decode())
+            self.log.error("wakatime error: %s", stdout.decode())
         self.finish()
 
 
