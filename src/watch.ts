@@ -24,10 +24,9 @@ export const beatHeart = (
     timestamp: now / 1e3,
     iswrite: type === 'write'
   }
+  lastBeat = now
   requestAPI<any>('heartbeat', {
     body: JSON.stringify(data),
     method: 'POST'
-  }).then(() => {
-    lastBeat = now
   })
 }
