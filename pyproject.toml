@@ -69,6 +69,7 @@ skip = [ "build-npm"]
 
 [tool.jupyter-releaser.options]
 version_cmd = "hatch version"
+release_message = "chore(release): {version}"
 
 [tool.jupyter-releaser.hooks]
 before-build-python = [
