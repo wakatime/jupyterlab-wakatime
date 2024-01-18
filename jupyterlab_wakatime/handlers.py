@@ -1,5 +1,5 @@
+import asyncio
 import os.path
-import subprocess
 from typing import TypedDict
 
 from jupyter_server.base.handlers import APIHandler
@@ -28,11 +28,11 @@ class RouteHandler(APIHandler):
     # patch, put, delete, options) to ensure only authorized user can request the
     # Jupyter server
     @tornado.web.authenticated
-    def post(self):
+    async def post(self):
         try:
             data: RequestData = tornado.escape.json_decode(self.request.body)
-            print(data)
-            cmd_args: list[str] = [WAKATIME_CLI, "--plugin", USER_AGENT]
+            cmd_args: list[str] = ["--plugin", USER_AGENT]
+            cmd_args.append("--log-to-stdout")
 
             filepath = os.path.abspath(data["filepath"])
             cmd_args.extend(["--entity", filepath])
@@ -42,12 +42,16 @@ class RouteHandler(APIHandler):
                 cmd_args.append("--write")
         except:
             self.set_status(400)
-        print(cmd_args)
-        p = subprocess.run(cmd_args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        print(p.stdout.decode("utf8"))
-        print(p.stderr.decode("utf8"))
-        if p.returncode != 0:
+        proc = await asyncio.create_subprocess_exec(
+            WAKATIME_CLI,
+            *cmd_args,
+            stdout=asyncio.subprocess.PIPE,
+        )
+        stdout, _ = await proc.communicate()
+        self.log.info("wakatime-cli" + " ".join(cmd_args))
+        if proc.returncode != 0:
             self.set_status(500)
+            self.log.error("wakatime error:", stdout.decode())
         self.finish()
 
 
