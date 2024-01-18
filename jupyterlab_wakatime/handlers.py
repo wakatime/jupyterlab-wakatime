@@ -48,7 +48,7 @@ class RouteHandler(APIHandler):
             stdout=asyncio.subprocess.PIPE,
         )
         stdout, _ = await proc.communicate()
-        self.log.info("wakatime-cli" + " ".join(cmd_args))
+        self.log.info("wakatime-cli " + " ".join(cmd_args))
         if proc.returncode != 0:
             self.set_status(500)
             self.log.error("wakatime error:", stdout.decode())
