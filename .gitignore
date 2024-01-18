@@ -120,4 +120,6 @@ dmypy.json
 # Yarn cache
 .yarn/
 
+.venv/
+.envrc
 playground/
