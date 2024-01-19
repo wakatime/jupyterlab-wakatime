@@ -54,7 +54,22 @@ class RouteHandler(APIHandler):
         stdout, _ = await proc.communicate()
         if proc.returncode != 0:
             self.set_status(500)
-            self.log.error("wakatime error: %s", stdout.decode())
+            if proc.returncode == 102:
+                self.log.error("WakaTime API error")
+            if proc.returncode == 104:
+                self.log.error("WakaTime API key invalid")
+            if proc.returncode == 103:
+                self.log.error("WakaTime failed to parse config file")
+            if proc.returncode == 110:
+                self.log.error("WakaTime failed to read config file")
+            if proc.returncode == 111:
+                self.log.error("WakaTime failed to write config file")
+            if proc.returncode == 112:
+                self.log.warning("WakaTime rate limited")
+                self.set_status(200)  # rate limited is not serious
+            stdout = stdout.decode().strip()
+            if stdout:
+                self.log.error("WakaTime error: %s", stdout)
         self.finish()
 
 
