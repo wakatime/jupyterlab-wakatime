@@ -1,5 +1,6 @@
 import { JupyterFrontEnd, JupyterFrontEndPlugin } from '@jupyterlab/application'
 import { INotebookTracker } from '@jupyterlab/notebook'
+import { IEditorTracker } from '@jupyterlab/fileeditor'
 
 import { beatHeart } from './watch'
 
@@ -10,8 +11,12 @@ const plugin: JupyterFrontEndPlugin<void> = {
   id: 'jupyterlab-wakatime:plugin',
   description: 'A JupyterLab WakaTime extension.',
   autoStart: true,
-  requires: [INotebookTracker],
-  activate: (app: JupyterFrontEnd, notebooks: INotebookTracker) => {
+  requires: [INotebookTracker, IEditorTracker],
+  activate: (
+    app: JupyterFrontEnd,
+    notebooks: INotebookTracker,
+    editors: IEditorTracker
+  ) => {
     console.log('JupyterLab extension jupyterlab-wakatime is activated!')
     notebooks.widgetAdded.connect((_, notebook) => {
       const filepath = notebook.sessionContext.path
@@ -29,6 +34,21 @@ const plugin: JupyterFrontEndPlugin<void> = {
         return
       }
       beatHeart(notebook.sessionContext.path, 'switch')
+    })
+    editors.widgetAdded.connect((_, editor) => {
+      editor.context.fileChanged.connect((ctx) => {
+        beatHeart(ctx.path, 'change')
+      })
+      editor.context.saveState.connect((ctx, state) => {
+        if (state === 'completed') {
+          beatHeart(ctx.path, 'write')
+        }
+      })
+    })
+    editors.currentChanged.connect((_, editor) => {
+      if (editor !== null) {
+        beatHeart(editor.context.path, 'switch')
+      }
     })
   }
 }
