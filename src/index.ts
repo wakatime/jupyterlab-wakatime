@@ -36,7 +36,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
       beatHeart(notebook.sessionContext.path, 'switch')
     })
     editors.widgetAdded.connect((_, editor) => {
-      editor.context.fileChanged.connect((ctx) => {
+      editor.context.fileChanged.connect(ctx => {
         beatHeart(ctx.path, 'change')
       })
       editor.context.saveState.connect((ctx, state) => {
