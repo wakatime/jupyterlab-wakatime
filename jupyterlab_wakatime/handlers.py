@@ -1,4 +1,6 @@
 import asyncio
+from contextlib import suppress
+import json
 import os.path
 import shlex
 from typing import TypedDict
@@ -33,7 +35,6 @@ class RouteHandler(APIHandler):
         try:
             data: RequestData = tornado.escape.json_decode(self.request.body)
             cmd_args: list[str] = ["--plugin", USER_AGENT]
-            cmd_args.append("--log-to-stdout")
 
             root_dir = os.path.expanduser(self.contents_manager.root_dir)
             filepath = os.path.abspath(os.path.join(root_dir, data["filepath"]))
@@ -49,27 +50,31 @@ class RouteHandler(APIHandler):
         proc = await asyncio.create_subprocess_exec(
             WAKATIME_CLI,
             *cmd_args,
+            "--log-to-stdout",
+            "--verbose",
             stdout=asyncio.subprocess.PIPE,
         )
         stdout, _ = await proc.communicate()
-        if proc.returncode != 0:
-            self.set_status(500)
-            if proc.returncode == 102:
-                self.log.error("WakaTime API error")
-            if proc.returncode == 104:
-                self.log.error("WakaTime API key invalid")
-            if proc.returncode == 103:
-                self.log.error("WakaTime failed to parse config file")
-            if proc.returncode == 110:
-                self.log.error("WakaTime failed to read config file")
-            if proc.returncode == 111:
-                self.log.error("WakaTime failed to write config file")
-            if proc.returncode == 112:
-                self.log.warning("WakaTime rate limited")
-                self.set_status(200)  # rate limited is not serious
-            stdout = stdout.decode().strip()
-            if stdout:
-                self.log.error("WakaTime error: %s", stdout)
+        stdout = stdout.decode().strip()
+
+        if proc.returncode == 112:
+            self.log.warning("WakaTime rate limited")
+        elif proc.returncode == 102:
+            self.log.warning("WakaTime API error. May be connection issue")
+        elif proc.returncode == 104:
+            self.log.error("WakaTime API key invalid")
+        elif proc.returncode == 103:
+            self.log.error("WakaTime failed to parse config file")
+        elif proc.returncode == 110:
+            self.log.error("WakaTime failed to read config file")
+        elif proc.returncode == 111:
+            self.log.error("WakaTime failed to write config file")
+        for line in stdout.split("\n"):
+            with suppress(json.JSONDecodeError):
+                log = json.loads(line)
+                if log.get("level") != "error":
+                    continue
+                self.log.error("WakaTime error: %s", log.get("message", line))
         self.finish()
 
 
