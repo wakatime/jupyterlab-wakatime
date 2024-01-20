@@ -7,9 +7,9 @@
         "jupyterlab",
         "jupyterlab-extension"
     ],
-    "homepage": "https://github.com/AllanChain/jupyterlab-wakatime",
+    "homepage": "https://github.com/wakatime/jupyterlab-wakatime",
     "bugs": {
-        "url": "https://github.com/AllanChain/jupyterlab-wakatime/issues"
+        "url": "https://github.com/wakatime/jupyterlab-wakatime/issues"
     },
     "license": "BSD-3-Clause",
     "author": {
@@ -25,7 +25,7 @@
     "style": "style/index.css",
     "repository": {
         "type": "git",
-        "url": "https://github.com/AllanChain/jupyterlab-wakatime.git"
+        "url": "https://github.com/wakatime/jupyterlab-wakatime.git"
     },
     "scripts": {
         "build": "jlpm build:lib && jlpm build:labextension:dev",

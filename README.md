@@ -1,6 +1,6 @@
 # jupyterlab_wakatime
 
-[![Github Actions Status](https://github.com/AllanChain/jupyterlab-wakatime/workflows/Build/badge.svg)](https://github.com/AllanChain/jupyterlab-wakatime/actions/workflows/build.yml)
+[![Github Actions Status](https://github.com/wakatime/jupyterlab-wakatime/workflows/Build/badge.svg)](https://github.com/wakatime/jupyterlab-wakatime/actions/workflows/build.yml)
 A JupyterLab WakaTime extension.
 
 ## Requirements
