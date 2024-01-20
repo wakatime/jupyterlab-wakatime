@@ -13,7 +13,7 @@ A JupyterLab WakaTime extension.
 >
 > This plugin is at a VERY early stage!
 
-1.  Install [wakatime-cli](https://github.com/wakatime/wakatime-cli):
+1.  Install [wakatime-cli](https://github.com/wakatime/wakatime-cli) on the JupyterLab server machine if you haven't:
 
         curl -fsSL https://raw.githubusercontent.com/wakatime/vim-wakatime/master/scripts/install_cli.py | python
 
@@ -26,7 +26,7 @@ A JupyterLab WakaTime extension.
 
     Replace `XXXX` with your actual [api key](https://wakatime.com/settings#apikey).
 
-3.  Execute (NOT available yet):
+3.  Execute:
 
         pip install jupyterlab_wakatime
 
