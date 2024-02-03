@@ -3,3 +3,7 @@
 
     https://jupyterlab.readthedocs.io/en/stable/developer/css.html
 */
+
+.jp-wakatime-status:has([data-error]) {
+  background-color: var(--jp-warn-color3)
+}

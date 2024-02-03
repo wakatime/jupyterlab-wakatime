@@ -1,8 +1,16 @@
 {
   "jupyter.lab.shortcuts": [],
-  "title": "jupyterlab-wakatime",
-  "description": "jupyterlab-wakatime settings.",
+  "title": "WakaTime",
+  "description": "WakaTime settings.",
+  "jupyter.lab.setting-icon": "jupyterlab-wakatime:wakatime",
   "type": "object",
-  "properties": {},
+  "properties": {
+    "status": {
+      "type": "boolean",
+      "title": "Show on status bar",
+      "description": "Show WakaTime status on the status bar.",
+      "default": true
+    }
+  },
   "additionalProperties": false
 }

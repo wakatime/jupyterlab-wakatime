@@ -14,20 +14,23 @@ import tornado
 from .wakatime import USER_AGENT, WAKATIME_CLI
 
 
-class RequestData(TypedDict):
+class BeatData(TypedDict):
     filepath: str
     iswrite: bool
     timestamp: float
 
 
-class RouteHandler(APIHandler):
+class BeatHandler(APIHandler):
     # The following decorator should be present on all verb methods (head, get, post,
     # patch, put, delete, options) to ensure only authorized user can request the
     # Jupyter server
     @tornado.web.authenticated
     async def post(self):
+        if not os.path.exists(WAKATIME_CLI):
+            self.log.error("JupyterLab Wakatime plugin failed to find %s", WAKATIME_CLI)
+            return self.finish(json.dumps({"code": 127}))
         try:
-            data: RequestData = tornado.escape.json_decode(self.request.body)
+            data: BeatData = tornado.escape.json_decode(self.request.body)
             cmd_args: list[str] = ["--plugin", USER_AGENT]
 
             root_dir = os.path.expanduser(self.contents_manager.root_dir)
@@ -38,8 +41,8 @@ class RouteHandler(APIHandler):
             if data["iswrite"]:
                 cmd_args.append("--write")
         except:
-            self.set_status(400)
-            return self.finish()
+            self.log.info("wakatime-cli " + shlex.join(cmd_args))
+            return self.finish(json.dumps({"code": 400}))
         self.log.info("wakatime-cli " + shlex.join(cmd_args))
 
         # Async subprocess is required for non-blocking access to return code
@@ -47,7 +50,7 @@ class RouteHandler(APIHandler):
         # As a workaround, create a Popen instance and leave it alone
         if platform.system() == "Windows":
             subprocess.Popen([WAKATIME_CLI, *cmd_args])
-            return self.finish()
+            return self.finish(json.dumps({"code": 0}))
 
         proc = await asyncio.create_subprocess_exec(
             WAKATIME_CLI,
@@ -77,17 +80,40 @@ class RouteHandler(APIHandler):
                 if log.get("level") != "error":
                     continue
                 self.log.error("WakaTime error: %s", log.get("message", line))
-        self.finish()
+        return self.finish(json.dumps({"code": proc.returncode}))
+
+
+class StatusHandler(APIHandler):
+    @tornado.web.authenticated
+    async def get(self):
+        if not os.path.exists(WAKATIME_CLI):
+            self.log.error("JupyterLab Wakatime plugin failed to find %s", WAKATIME_CLI)
+            return self.finish(json.dumps({"time": ""}))
+
+        cmd = [WAKATIME_CLI, "--today", "--output=raw-json"]
+        if platform.system() == "Windows":
+            proc = subprocess.run(cmd, stdout=subprocess.PIPE, encoding="utf8")
+            if proc.returncode:
+                return self.finish(json.dumps({"time": ""}))
+            stdout = proc.stdout.strip()
+        else:
+            proc = await asyncio.create_subprocess_exec(
+                *cmd, stdout=asyncio.subprocess.PIPE
+            )
+            stdout, _ = await proc.communicate()
+            if proc.returncode:
+                return self.finish(json.dumps({"time": ""}))
+            stdout = stdout.decode().strip()
+        data = json.loads(stdout).get("data", {})
+        time = data.get("grand_total", {}).get("digital", "")
+        self.finish(json.dumps({"time": time}))
 
 
 def setup_handlers(web_app):
-    if not os.path.exists(WAKATIME_CLI):
-        raise RuntimeWarning(
-            "JupyterLab Wakatime plugin failed to find " + WAKATIME_CLI
-        )
-
     host_pattern = ".*$"
-    base_url = web_app.settings["base_url"]
-    route_pattern = url_path_join(base_url, "jupyterlab-wakatime", "heartbeat")
-    handlers = [(route_pattern, RouteHandler)]
+    base_url = url_path_join(web_app.settings["base_url"], "jupyterlab-wakatime")
+    handlers = [
+        (url_path_join(base_url, "heartbeat"), BeatHandler),
+        (url_path_join(base_url, "status"), StatusHandler),
+    ]
     web_app.add_handlers(host_pattern, handlers)

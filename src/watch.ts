@@ -1,4 +1,5 @@
 import { requestAPI } from './handler'
+import type { StatusModel } from './status'
 
 // let heartHandle: ReturnType<typeof setTimeout> | null = null
 let lastBeat = Date.now()
@@ -10,23 +11,38 @@ export type BeatData = {
   iswrite: boolean
 }
 
-export const beatHeart = (
-  filepath: string,
-  type: 'switch' | 'change' | 'write'
-) => {
-  console.log(type, filepath)
-  const now = Date.now()
-  if (type === 'change' && now - lastBeat < wakaInterval) {
-    return
+export const createHeart = (statusModel: StatusModel) => {
+  return async (
+    filepath: string,
+    type: 'switch' | 'change' | 'write'
+  ) => {
+    console.log(type, filepath)
+    const now = Date.now()
+    if (type === 'change' && now - lastBeat < wakaInterval) {
+      return
+    }
+    const data: BeatData = {
+      filepath: filepath,
+      timestamp: now / 1e3,
+      iswrite: type === 'write'
+    }
+    lastBeat = now
+    const { code } = await requestAPI<{ code: number }>('heartbeat', {
+      body: JSON.stringify(data),
+      method: 'POST'
+    })
+    statusModel.error = code
   }
-  const data: BeatData = {
-    filepath: filepath,
-    timestamp: now / 1e3,
-    iswrite: type === 'write'
-  }
-  lastBeat = now
-  requestAPI<any>('heartbeat', {
-    body: JSON.stringify(data),
-    method: 'POST'
-  })
+}
+
+const immediateInterval = (callback: () => void, ms: number) => {
+  callback()
+  setInterval(callback, ms)
+}
+
+export const pollStatus = (model: StatusModel) => {
+  immediateInterval(async () => {
+    const { time } = await requestAPI<{ time: string, error: number }>('status')
+    model.time = time
+  }, 6e4)
 }

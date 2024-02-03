@@ -2,8 +2,10 @@ import { JupyterFrontEnd, JupyterFrontEndPlugin } from '@jupyterlab/application'
 import { INotebookTracker } from '@jupyterlab/notebook'
 import { IEditorTracker } from '@jupyterlab/fileeditor'
 import { ISettingRegistry } from '@jupyterlab/settingregistry'
+import { IStatusBar } from '@jupyterlab/statusbar'
 
-import { beatHeart } from './watch'
+import { createHeart, pollStatus } from './watch'
+import { StatusModel, WakaTimeStatus } from './status'
 
 /**
  * Initialization data for the jupyterlab-wakatime extension.
@@ -13,14 +15,18 @@ const plugin: JupyterFrontEndPlugin<void> = {
   description: 'A JupyterLab WakaTime extension.',
   autoStart: true,
   requires: [INotebookTracker, IEditorTracker],
-  optional: [ISettingRegistry],
+  optional: [ISettingRegistry, IStatusBar],
   activate: (
     app: JupyterFrontEnd,
     notebooks: INotebookTracker,
     editors: IEditorTracker,
-    settingRegistry: ISettingRegistry | null
+    settingRegistry: ISettingRegistry | null,
+    statusBar: IStatusBar | null,
   ) => {
     console.log('JupyterLab extension jupyterlab-wakatime is activated!')
+    const statusModel = new StatusModel()
+    const beatHeart = createHeart(statusModel)
+
     notebooks.widgetAdded.connect((_, notebook) => {
       const filepath = notebook.sessionContext.path
       notebook.content.model?.contentChanged.connect(() => {
@@ -57,10 +63,14 @@ const plugin: JupyterFrontEndPlugin<void> = {
       settingRegistry
         .load(plugin.id)
         .then(settings => {
-          console.log(
-            'jupyterlab-wakatime settings loaded:',
-            settings.composite
-          )
+          if (settings.get('status').composite && statusBar) {
+            const wakatimeStatus = new WakaTimeStatus(statusModel)
+            statusBar.registerStatusItem('wakatime-status', {
+              item: wakatimeStatus,
+              align: 'right',
+            })
+            pollStatus(statusModel)
+          }
         })
         .catch(reason => {
           console.error(
