@@ -1,6 +1,7 @@
 import { JupyterFrontEnd, JupyterFrontEndPlugin } from '@jupyterlab/application'
 import { INotebookTracker } from '@jupyterlab/notebook'
 import { IEditorTracker } from '@jupyterlab/fileeditor'
+import { ISettingRegistry } from '@jupyterlab/settingregistry'
 
 import { beatHeart } from './watch'
 
@@ -12,10 +13,12 @@ const plugin: JupyterFrontEndPlugin<void> = {
   description: 'A JupyterLab WakaTime extension.',
   autoStart: true,
   requires: [INotebookTracker, IEditorTracker],
+  optional: [ISettingRegistry],
   activate: (
     app: JupyterFrontEnd,
     notebooks: INotebookTracker,
-    editors: IEditorTracker
+    editors: IEditorTracker,
+    settingRegistry: ISettingRegistry | null
   ) => {
     console.log('JupyterLab extension jupyterlab-wakatime is activated!')
     notebooks.widgetAdded.connect((_, notebook) => {
@@ -50,6 +53,22 @@ const plugin: JupyterFrontEndPlugin<void> = {
         beatHeart(editor.context.path, 'switch')
       }
     })
+    if (settingRegistry) {
+      settingRegistry
+        .load(plugin.id)
+        .then(settings => {
+          console.log(
+            'jupyterlab-wakatime settings loaded:',
+            settings.composite
+          )
+        })
+        .catch(reason => {
+          console.error(
+            'Failed to load settings for jupyterlab-wakatime.',
+            reason
+          )
+        })
+    }
   }
 }
 

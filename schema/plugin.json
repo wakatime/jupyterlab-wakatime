@@ -1,0 +1,8 @@
+{
+  "jupyter.lab.shortcuts": [],
+  "title": "jupyterlab-wakatime",
+  "description": "jupyterlab-wakatime settings.",
+  "type": "object",
+  "properties": {},
+  "additionalProperties": false
+}

@@ -868,6 +868,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@jupyterlab/nbformat@npm:^4.0.12":
+  version: 4.0.12
+  resolution: "@jupyterlab/nbformat@npm:4.0.12"
+  dependencies:
+    "@lumino/coreutils": ^2.1.2
+  checksum: e9bd3385e9b7020f27577dc790462cebab3fada9571b64e57c19d9246b944726a1b3d866fec79b4be67153e2b19a1caa08d15d066274b975bfd07cd8211de605
+  languageName: node
+  linkType: hard
+
 "@jupyterlab/notebook@npm:^4.0.10":
   version: 4.0.10
   resolution: "@jupyterlab/notebook@npm:4.0.10"
@@ -988,6 +997,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@jupyterlab/settingregistry@npm:^4.0.0":
+  version: 4.0.12
+  resolution: "@jupyterlab/settingregistry@npm:4.0.12"
+  dependencies:
+    "@jupyterlab/nbformat": ^4.0.12
+    "@jupyterlab/statedb": ^4.0.12
+    "@lumino/commands": ^2.1.3
+    "@lumino/coreutils": ^2.1.2
+    "@lumino/disposable": ^2.1.2
+    "@lumino/signaling": ^2.1.2
+    "@rjsf/utils": ^5.1.0
+    ajv: ^8.12.0
+    json5: ^2.2.3
+  peerDependencies:
+    react: ">=16"
+  checksum: 1d3b425effb33333b3c89b0f4bac08ffba5fd97602ce92fb3c3037c15573c853609ec04b0e7e2d4c74f67a75360063e1fd00ba19862abc992f867a3d31e8b440
+  languageName: node
+  linkType: hard
+
 "@jupyterlab/settingregistry@npm:^4.0.10":
   version: 4.0.10
   resolution: "@jupyterlab/settingregistry@npm:4.0.10"
@@ -1017,6 +1045,19 @@ __metadata:
     "@lumino/properties": ^2.0.1
     "@lumino/signaling": ^2.1.2
   checksum: 4032966b981c775f53b28137cde3b7c215444e898e9570b2f814c2fb1ee1d8f023702287a61d7d4267fffb71e9d8bdc2e79d165f0238a59ec0fea717540f0324
+  languageName: node
+  linkType: hard
+
+"@jupyterlab/statedb@npm:^4.0.12":
+  version: 4.0.12
+  resolution: "@jupyterlab/statedb@npm:4.0.12"
+  dependencies:
+    "@lumino/commands": ^2.1.3
+    "@lumino/coreutils": ^2.1.2
+    "@lumino/disposable": ^2.1.2
+    "@lumino/properties": ^2.0.1
+    "@lumino/signaling": ^2.1.2
+  checksum: a0bc781a2c16067890ad1a7f7a774ea9b47a9db052cde756416f953aef6cb9451e057a18230b0bb91dad0c3000dbeb6d349121561050e8dc4a91478aa0d40e61
   languageName: node
   linkType: hard
 
@@ -3905,6 +3946,7 @@ __metadata:
     "@jupyterlab/fileeditor": ^4.0.10
     "@jupyterlab/notebook": ^4.0.10
     "@jupyterlab/services": ^7.0.0
+    "@jupyterlab/settingregistry": ^4.0.0
     "@types/json-schema": ^7.0.11
     "@types/react": ^18.0.26
     "@types/react-addons-linked-state-mixin": ^0.14.22

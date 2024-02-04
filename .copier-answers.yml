@@ -1,14 +1,14 @@
 # Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
-_commit: v4.2.4
+_commit: v4.2.5
 _src_path: https://github.com/jupyterlab/extension-template
 author_email: allan-chain@outllok.com
 author_name: Allan Chain
 has_binder: false
-has_settings: false
+has_settings: true
 kind: server
 labextension_name: jupyterlab-wakatime
 project_short_description: A JupyterLab WakaTime extension.
 python_name: jupyterlab_wakatime
-repository: https://github.com/AllanChain/jupyterlab-wakatime
+repository: https://github.com/wakatime/jupyterlab-wakatime
 test: false
 

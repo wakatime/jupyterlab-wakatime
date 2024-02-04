@@ -18,7 +18,9 @@
     },
     "files": [
         "lib/**/*.{d.ts,eot,gif,html,jpg,js,js.map,json,png,svg,woff2,ttf}",
-        "style/**/*.{css,js,eot,gif,html,jpg,json,png,svg,woff2,ttf}"
+        "style/**/*.{css,js,eot,gif,html,jpg,json,png,svg,woff2,ttf}",
+        "src/**/*.{ts,tsx}",
+        "schema/*.json"
     ],
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
@@ -58,7 +60,8 @@
         "@jupyterlab/coreutils": "^6.0.0",
         "@jupyterlab/fileeditor": "^4.0.10",
         "@jupyterlab/notebook": "^4.0.10",
-        "@jupyterlab/services": "^7.0.0"
+        "@jupyterlab/services": "^7.0.0",
+        "@jupyterlab/settingregistry": "^4.0.0"
     },
     "devDependencies": {
         "@jupyterlab/builder": "^4.0.0",
@@ -105,7 +108,8 @@
             }
         },
         "extension": true,
-        "outputDir": "jupyterlab_wakatime/labextension"
+        "outputDir": "jupyterlab_wakatime/labextension",
+        "schemaDir": "schema"
     },
     "eslintIgnore": [
         "node_modules",
