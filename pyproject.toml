@@ -81,3 +81,6 @@ before-build-python = [
 
 [tool.check-wheel-contents]
 ignore = ["W002"]
+
+[tool.black]
+target-version = ["py38"]
