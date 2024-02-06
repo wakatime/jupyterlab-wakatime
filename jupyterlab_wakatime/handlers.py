@@ -7,17 +7,9 @@ from typing import TypedDict
 
 from jupyter_server.base.handlers import APIHandler
 from jupyter_server.utils import url_path_join
-from jupyterlab._version import __version__ as jlab_version
 import tornado
 
-from ._version import __version__ as extension_version
-
-HOME_FOLDER = os.path.realpath(
-    os.environ.get("WAKATIME_HOME") or os.path.expanduser("~")
-)
-RESOURCES_FOLDER = os.path.join(HOME_FOLDER, ".wakatime")
-WAKATIME_CLI = os.path.join(RESOURCES_FOLDER, "wakatime-cli")
-USER_AGENT = f"jupyterlab/{jlab_version} jupyterlab-wakatime/{extension_version}"
+from .wakatime import USER_AGENT, WAKATIME_CLI
 
 
 class RequestData(TypedDict):
