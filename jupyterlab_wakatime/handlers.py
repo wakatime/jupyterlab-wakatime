@@ -2,7 +2,9 @@ import asyncio
 from contextlib import suppress
 import json
 import os.path
+import platform
 import shlex
+import subprocess
 from typing import TypedDict
 
 from jupyter_server.base.handlers import APIHandler
@@ -39,6 +41,11 @@ class RouteHandler(APIHandler):
             self.set_status(400)
             return self.finish()
         self.log.info("wakatime-cli " + shlex.join(cmd_args))
+
+        if platform.system() == "Windows":
+            subprocess.call([WAKATIME_CLI, *cmd_args])
+            return self.finish()
+
         proc = await asyncio.create_subprocess_exec(
             WAKATIME_CLI,
             *cmd_args,
