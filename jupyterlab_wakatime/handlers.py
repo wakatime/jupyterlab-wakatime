@@ -42,8 +42,11 @@ class RouteHandler(APIHandler):
             return self.finish()
         self.log.info("wakatime-cli " + shlex.join(cmd_args))
 
+        # Async subprocess is required for non-blocking access to return code
+        # However, it's not supported on Windows
+        # As a workaround, create a Popen instance and leave it alone
         if platform.system() == "Windows":
-            subprocess.call([WAKATIME_CLI, *cmd_args])
+            subprocess.Popen([WAKATIME_CLI, *cmd_args])
             return self.finish()
 
         proc = await asyncio.create_subprocess_exec(
