@@ -39,11 +39,9 @@ To remove the extension, execute:
 pip uninstall jupyterlab_wakatime
 ```
 
-The following content is generated with the template:
-
----
-
 ## Troubleshoot
+
+If you don't see the plugin in https://wakatime.com/plugins/status, please enable `debug` setting and check both JupyterLab logs in terminal and `wakatime.log` file.
 
 If you are seeing the frontend extension, but it is not working, check
 that the server extension is enabled:
@@ -58,6 +56,10 @@ the frontend extension, check the frontend extension is installed:
 ```bash
 jupyter labextension list
 ```
+
+The following content is generated with the template:
+
+---
 
 ## Contributing
 

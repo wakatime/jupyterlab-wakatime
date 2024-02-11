@@ -9,13 +9,21 @@ export type BeatData = {
   filepath: string
   timestamp: number
   iswrite: boolean
+  debug: boolean
 }
 
-export const createHeart = (statusModel: StatusModel) => {
-  return async (
+export class Heart {
+  statusModel: StatusModel
+  debug: boolean
+
+  constructor(statusModel: StatusModel, debug: boolean = false) {
+    this.statusModel = statusModel
+    this.debug = debug
+  }
+  async beat(
     filepath: string,
     type: 'switch' | 'change' | 'write'
-  ) => {
+  ) {
     console.log(type, filepath)
     const now = Date.now()
     if (type === 'change' && now - lastBeat < wakaInterval) {
@@ -24,14 +32,15 @@ export const createHeart = (statusModel: StatusModel) => {
     const data: BeatData = {
       filepath: filepath,
       timestamp: now / 1e3,
-      iswrite: type === 'write'
+      iswrite: type === 'write',
+      debug: this.debug,
     }
     lastBeat = now
     const { code } = await requestAPI<{ code: number }>('heartbeat', {
       body: JSON.stringify(data),
       method: 'POST'
     })
-    statusModel.error = code
+    this.statusModel.error = code
   }
 }
 

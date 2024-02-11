@@ -4,7 +4,7 @@ import { IEditorTracker } from '@jupyterlab/fileeditor'
 import { ISettingRegistry } from '@jupyterlab/settingregistry'
 import { IStatusBar } from '@jupyterlab/statusbar'
 
-import { createHeart, pollStatus } from './watch'
+import { Heart, pollStatus } from './watch'
 import { StatusModel, WakaTimeStatus } from './status'
 
 /**
@@ -25,44 +25,46 @@ const plugin: JupyterFrontEndPlugin<void> = {
   ) => {
     console.log('JupyterLab extension jupyterlab-wakatime is activated!')
     const statusModel = new StatusModel()
-    const beatHeart = createHeart(statusModel)
+    const heart = new Heart(statusModel)
 
     notebooks.widgetAdded.connect((_, notebook) => {
       const filepath = notebook.sessionContext.path
       notebook.content.model?.contentChanged.connect(() => {
-        beatHeart(filepath, 'change')
+        heart.beat(filepath, 'change')
       })
       notebook.content.model?.stateChanged.connect((_, change) => {
         if (change.name === 'dirty' && change.oldValue) {
-          beatHeart(filepath, 'write')
+          heart.beat(filepath, 'write')
         }
       })
     })
     notebooks.currentChanged.connect((_, notebook) => {
-      if (notebook === null) {
-        return
+      if (notebook !== null) {
+        heart.beat(notebook.sessionContext.path, 'switch')
       }
-      beatHeart(notebook.sessionContext.path, 'switch')
     })
     editors.widgetAdded.connect((_, editor) => {
       editor.context.fileChanged.connect(ctx => {
-        beatHeart(ctx.path, 'change')
+        heart.beat(ctx.path, 'change')
       })
       editor.context.saveState.connect((ctx, state) => {
         if (state === 'completed') {
-          beatHeart(ctx.path, 'write')
+          heart.beat(ctx.path, 'write')
         }
       })
     })
     editors.currentChanged.connect((_, editor) => {
       if (editor !== null) {
-        beatHeart(editor.context.path, 'switch')
+        heart.beat(editor.context.path, 'switch')
       }
     })
     if (settingRegistry) {
       settingRegistry
         .load(plugin.id)
         .then(settings => {
+          if (settings.get('debug').composite) {
+            heart.debug = true
+          }
           if (settings.get('status').composite && statusBar) {
             const wakatimeStatus = new WakaTimeStatus(statusModel)
             statusBar.registerStatusItem('wakatime-status', {

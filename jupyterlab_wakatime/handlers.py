@@ -18,6 +18,7 @@ class BeatData(TypedDict):
     filepath: str
     iswrite: bool
     timestamp: float
+    debug: bool
 
 
 class BeatHandler(APIHandler):
@@ -40,27 +41,31 @@ class BeatHandler(APIHandler):
                 cmd_args.extend(["--time", str(data["timestamp"])])
             if data["iswrite"]:
                 cmd_args.append("--write")
+            if data.get("debug"):
+                cmd_args.append("--verbose")
         except:
-            self.log.info("wakatime-cli " + shlex.join(cmd_args))
             return self.finish(json.dumps({"code": 400}))
-        self.log.info("wakatime-cli " + shlex.join(cmd_args))
+        if data.get("debug"):
+            self.log.info("wakatime-cli " + shlex.join(cmd_args))
 
         # Async subprocess is required for non-blocking access to return code
         # However, it's not supported on Windows
         # As a workaround, create a Popen instance and leave it alone
         if platform.system() == "Windows":
-            subprocess.Popen([WAKATIME_CLI, *cmd_args])
-            return self.finish(json.dumps({"code": 0}))
-
-        proc = await asyncio.create_subprocess_exec(
-            WAKATIME_CLI,
-            *cmd_args,
-            "--log-to-stdout",
-            "--verbose",
-            stdout=asyncio.subprocess.PIPE,
-        )
-        stdout, _ = await proc.communicate()
-        stdout = stdout.decode().strip()
+            if not data.get("debug"):
+                subprocess.Popen([WAKATIME_CLI, *cmd_args])
+                return self.finish(json.dumps({"code": 0}))
+            proc = subprocess.run([WAKATIME_CLI, *cmd_args], stdout=subprocess.PIPE)
+            stdout = proc.stdout.decode().strip()
+        else:
+            proc = await asyncio.create_subprocess_exec(
+                WAKATIME_CLI,
+                *cmd_args,
+                "--log-to-stdout",
+                stdout=asyncio.subprocess.PIPE,
+            )
+            stdout, _ = await proc.communicate()
+            stdout = stdout.decode().strip()
 
         if proc.returncode == 112:
             self.log.warning("WakaTime rate limited")
@@ -77,9 +82,11 @@ class BeatHandler(APIHandler):
         for line in stdout.split("\n"):
             with suppress(json.JSONDecodeError):
                 log = json.loads(line)
-                if log.get("level") != "error":
-                    continue
-                self.log.error("WakaTime error: %s", log.get("message", line))
+                level = log.get("level", "")
+                if hasattr(self.log, level):
+                    getattr(self.log, level)(
+                        "WakaTime %s: %s", level, log.get("message")
+                    )
         return self.finish(json.dumps({"code": proc.returncode}))
 
 

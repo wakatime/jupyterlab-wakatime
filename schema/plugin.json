@@ -5,6 +5,12 @@
   "jupyter.lab.setting-icon": "jupyterlab-wakatime:wakatime",
   "type": "object",
   "properties": {
+    "debug": {
+      "type": "boolean",
+      "title": "Debug mode",
+      "description": "Turn on debug mode.",
+      "default": false
+    },
     "status": {
       "type": "boolean",
       "title": "Show on status bar",
