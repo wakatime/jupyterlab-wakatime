@@ -68,11 +68,11 @@ export class WakaTimeStatus extends VDomRenderer<StatusModel> {
   render() {
     return (
       <GroupItem
-        spacing={0}
+        spacing={4}
         title={this.model.errorMsg}
         data-error={this.model.error || undefined}
       >
-        <wakatimeIcon.react stylesheet={'statusBar'} />
+        <wakatimeIcon.react top="2px" left="1px" stylesheet={'statusBar'} />
         <TextItem source={this.model.time} />
       </GroupItem>
     )
