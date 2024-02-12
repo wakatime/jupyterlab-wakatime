@@ -5,7 +5,6 @@ import { GroupItem, TextItem } from '@jupyterlab/statusbar'
 
 import wakatimeSVG from '../style/icons/wakatime.svg'
 
-
 export const wakatimeIcon = new LabIcon({
   name: 'jupyterlab-wakatime:wakatime',
   svgstr: wakatimeSVG
@@ -32,17 +31,27 @@ export class StatusModel extends VDomModel {
   get errorMsg() {
     switch (this._error) {
       // extension-defined error codes
-      case 0: return "WakaTime is working"
-      case 127: return "wakatime-cli not found"
-      case 400: return "Plugin error"
+      case 0:
+        return 'WakaTime is working'
+      case 127:
+        return 'wakatime-cli not found'
+      case 400:
+        return 'Plugin error'
       // wakatime-cli error codes
-      case 112: return "Rate limited"
-      case 102: return "API or network error"
-      case 104: return "Invalid API key"
-      case 103: return "Config file parse error"
-      case 110: return "Config file read error"
-      case 111: return "Config file write error"
-      default: return "Unknown error"
+      case 112:
+        return 'Rate limited'
+      case 102:
+        return 'API or network error'
+      case 104:
+        return 'Invalid API key'
+      case 103:
+        return 'Config file parse error'
+      case 110:
+        return 'Config file read error'
+      case 111:
+        return 'Config file write error'
+      default:
+        return 'Unknown error'
     }
   }
 
@@ -62,7 +71,7 @@ export class StatusModel extends VDomModel {
 export class WakaTimeStatus extends VDomRenderer<StatusModel> {
   constructor(model: StatusModel) {
     super(model)
-    this.addClass("jp-wakatime-status")
+    this.addClass('jp-wakatime-status')
   }
 
   render() {

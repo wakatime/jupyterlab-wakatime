@@ -21,7 +21,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
     notebooks: INotebookTracker,
     editors: IEditorTracker,
     settingRegistry: ISettingRegistry | null,
-    statusBar: IStatusBar | null,
+    statusBar: IStatusBar | null
   ) => {
     console.log('JupyterLab extension jupyterlab-wakatime is activated!')
     const statusModel = new StatusModel()
@@ -69,7 +69,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
             const wakatimeStatus = new WakaTimeStatus(statusModel)
             statusBar.registerStatusItem('wakatime-status', {
               item: wakatimeStatus,
-              align: 'right',
+              align: 'right'
             })
             pollStatus(statusModel)
           }

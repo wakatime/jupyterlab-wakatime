@@ -20,10 +20,7 @@ export class Heart {
     this.statusModel = statusModel
     this.debug = debug
   }
-  async beat(
-    filepath: string,
-    type: 'switch' | 'change' | 'write'
-  ) {
+  async beat(filepath: string, type: 'switch' | 'change' | 'write') {
     console.log(type, filepath)
     const now = Date.now()
     if (type === 'change' && now - lastBeat < wakaInterval) {
@@ -33,7 +30,7 @@ export class Heart {
       filepath: filepath,
       timestamp: now / 1e3,
       iswrite: type === 'write',
-      debug: this.debug,
+      debug: this.debug
     }
     lastBeat = now
     const { code } = await requestAPI<{ code: number }>('heartbeat', {
@@ -51,7 +48,7 @@ const immediateInterval = (callback: () => void, ms: number) => {
 
 export const pollStatus = (model: StatusModel) => {
   immediateInterval(async () => {
-    const { time } = await requestAPI<{ time: string, error: number }>('status')
+    const { time } = await requestAPI<{ time: string; error: number }>('status')
     model.time = time
   }, 6e4)
 }
