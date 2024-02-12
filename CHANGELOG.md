@@ -2,12 +2,24 @@
 
 <!-- <START NEW CHANGELOG ENTRY> -->
 
+## 0.2.0
+
+### Features
+
+- Auto downloading `wakatime-cli`
+- Add WakaTime status bar
+- Add debug mode for more outputs
+
+### Bug Fixes
+
+- Make heartbeats on Windows asynchronous
+
+<!-- <END NEW CHANGELOG ENTRY> -->
+
 ## 0.1.4
 
 - Fix Windows support
 - Update repo URL
-
-<!-- <END NEW CHANGELOG ENTRY> -->
 
 ## 0.1.3
 
