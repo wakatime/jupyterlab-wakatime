@@ -12,13 +12,11 @@ A JupyterLab WakaTime extension.
 
 > [!Warning]
 >
-> This plugin is at a VERY early stage!
+> This plugin is at a early stage!
 
-1.  Install [wakatime-cli](https://github.com/wakatime/wakatime-cli) on the JupyterLab server machine if you haven't:
+1.  Execute:
 
-        curl -fsSL https://raw.githubusercontent.com/wakatime/vim-wakatime/master/scripts/install_cli.py | python
-
-    If the above command doesn't work, download [install_cli.py](https://raw.githubusercontent.com/wakatime/vim-wakatime/master/scripts/install_cli.py) and run it manually with Python 3.
+        pip install jupyterlab_wakatime
 
 2.  Create a `~/.wakatime.cfg` file with contents:
 
@@ -27,9 +25,6 @@ A JupyterLab WakaTime extension.
 
     Replace `XXXX` with your actual [api key](https://wakatime.com/settings#apikey).
 
-3.  Execute:
-
-        pip install jupyterlab_wakatime
 
 ## Uninstall
 
@@ -40,6 +35,12 @@ pip uninstall jupyterlab_wakatime
 ```
 
 ## Troubleshoot
+
+If you are having problem installing [wakatime-cli](https://github.com/wakatime/wakatime-cli) on the JupyterLab server machine, try running:
+
+        curl -fsSL https://raw.githubusercontent.com/wakatime/vim-wakatime/master/scripts/install_cli.py | python
+
+If the above command doesn't work, download [install_cli.py](https://raw.githubusercontent.com/wakatime/vim-wakatime/master/scripts/install_cli.py) and run it manually with Python 3.
 
 If you don't see the plugin in https://wakatime.com/plugins/status, please enable `debug` setting and check both JupyterLab logs in terminal and `wakatime.log` file.
 
@@ -56,10 +57,6 @@ the frontend extension, check the frontend extension is installed:
 ```bash
 jupyter labextension list
 ```
-
-The following content is generated with the template:
-
----
 
 ## Contributing
 
