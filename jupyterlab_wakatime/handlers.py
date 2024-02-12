@@ -11,7 +11,7 @@ from jupyter_server.base.handlers import APIHandler
 from jupyter_server.utils import url_path_join
 import tornado
 
-from .wakatime import USER_AGENT, WAKATIME_CLI
+from .wakatime import USER_AGENT, WAKATIME_CLI, download_cli
 
 
 class BeatData(TypedDict):
@@ -28,8 +28,9 @@ class BeatHandler(APIHandler):
     @tornado.web.authenticated
     async def post(self):
         if not os.path.exists(WAKATIME_CLI):
-            self.log.error("JupyterLab Wakatime plugin failed to find %s", WAKATIME_CLI)
-            return self.finish(json.dumps({"code": 127}))
+            self.finish(json.dumps({"code": 127}))
+            await download_cli(self.log)
+            return
         try:
             data: BeatData = tornado.escape.json_decode(self.request.body)
             cmd_args: list[str] = ["--plugin", USER_AGENT]
@@ -94,8 +95,9 @@ class StatusHandler(APIHandler):
     @tornado.web.authenticated
     async def get(self):
         if not os.path.exists(WAKATIME_CLI):
-            self.log.error("JupyterLab Wakatime plugin failed to find %s", WAKATIME_CLI)
-            return self.finish(json.dumps({"time": ""}))
+            self.finish(json.dumps({"time": ""}))
+            await download_cli(self.log)
+            return
 
         cmd = [WAKATIME_CLI, "--today", "--output=raw-json"]
         if platform.system() == "Windows":
