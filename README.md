@@ -1,6 +1,7 @@
-# jupyterlab_wakatime
+# JupyterLab WakaTime
 
 [![Github Actions Status](https://github.com/wakatime/jupyterlab-wakatime/workflows/Build/badge.svg)](https://github.com/wakatime/jupyterlab-wakatime/actions/workflows/build.yml)
+[![PyPI - Downloads](https://img.shields.io/pypi/dm/jupyterlab-wakatime?logo=pypi&label=Downloads)](https://pypi.org/project/jupyterlab-wakatime/)
 
 A JupyterLab WakaTime extension.
 
@@ -25,7 +26,6 @@ A JupyterLab WakaTime extension.
 
     Replace `XXXX` with your actual [api key](https://wakatime.com/settings#apikey).
 
-
 ## Uninstall
 
 To remove the extension, execute:
@@ -38,7 +38,7 @@ pip uninstall jupyterlab_wakatime
 
 If you are having problem installing [wakatime-cli](https://github.com/wakatime/wakatime-cli) on the JupyterLab server machine, try running:
 
-        curl -fsSL https://raw.githubusercontent.com/wakatime/vim-wakatime/master/scripts/install_cli.py | python
+    curl -fsSL https://raw.githubusercontent.com/wakatime/vim-wakatime/master/scripts/install_cli.py | python
 
 If the above command doesn't work, download [install_cli.py](https://raw.githubusercontent.com/wakatime/vim-wakatime/master/scripts/install_cli.py) and run it manually with Python 3.
 
