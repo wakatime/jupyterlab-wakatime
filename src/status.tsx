@@ -17,7 +17,7 @@ export class StatusModel extends VDomModel {
   constructor() {
     super()
     this._time = 'WakaTime'
-    this._error = 0
+    this._error = 200
   }
 
   get time() {
@@ -33,6 +33,8 @@ export class StatusModel extends VDomModel {
       // extension-defined error codes
       case 0:
         return 'WakaTime is working'
+      case 200:
+        return 'WakaTime is initializing'
       case 127:
         return 'wakatime-cli not found'
       case 400:
